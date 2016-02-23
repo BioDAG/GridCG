@@ -16,10 +16,12 @@ ORGANISMS=$1
 mkdir -p Blast_output
 mkdir -p BH_output
 
-mv `find jdl_collection/steremma_* -name "*.blast"` Blast_output/
-mv `find jdl_collection/steremma_* -name "*.bh"` BH_output/
+#mv `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
+cp `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
+#mv `find jdl_collection/JOBID/steremma_* -name "*.bh"` BH_output/
+cp `find jdl_collection/JOBID/steremma_* -name "*.bh"` BH_output/
 
-rm -r jdl_collection/steremma_*
+#rm -r jdl_collection/JOBID/steremma_*
 
 if [ ! -d "BH_output" ]; then
 	echo "directory BH_output does not exist!"
@@ -31,6 +33,7 @@ for file in `ls`; do
 	if [[ $file == *.bh ]]; then
 		stripped_file="${file%.*}"
 		echo $stripped_file
+		# F = substr attempts to capture the 2nd organism name in the BH line.
 		awk -v var="$stripped_file" '{F=substr($0,23,8);print >> var"_"F".bh";close(F)}' $file
 		rm $file
 	fi
