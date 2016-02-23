@@ -143,10 +143,16 @@ while $run; do
 		echo "Waiting for job $jobNumber to start running..."
 		sleep 120
 	else
+		# Code sometimes randomly reaches here, even though status is running or scheduled causing the script to exit.
 		error=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Unable to find" | grep "$jobID")
 		if [[ ! -z $error ]]; then
-			echo "Something is wrong with the grid because status is $currentStatus"
-            exit 4
+		    echo "status was unknown, retrying, error: $error"
+			# Try again to read the status.
+			sleep 10
+			currentStatus=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Current Status" | cut -d":" -f 2 | tr -d ' ')
+			continue
+			#echo "Something is wrong with the grid because status is $currentStatus and error is $error"
+            #exit 4
 
 		fi
 		sleep 60
@@ -159,4 +165,9 @@ done
 #                                                                              #
 ################################################################################
 ###### DELETED THIS PART FROM ORIGINAL FORK - REPLACE WITH MY OWN VERSION ######
+if [[ $getOutput == "true" ]]; then
+	glite-wms-job-output -i JOBID/jobID_$jobNumber --dir ./ 2>/dev/null
+fi
+	
+
 
