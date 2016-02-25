@@ -141,7 +141,7 @@ while $run; do
 		fi    	
 	elif [[ $currentStatus == "Ready" ||  $currentStatus == "Submitted" || $currentStatus == "Scheduled" || $currentStatus == "Waiting" ]]; then
 		echo "Waiting for job $jobNumber to start running..."
-		sleep 120
+		sleep 600
 	else
 		# Code sometimes randomly reaches here, even though status is running or scheduled causing the script to exit.
 		error=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Unable to find" | grep "$jobID")
@@ -166,6 +166,7 @@ done
 ################################################################################
 ###### DELETED THIS PART FROM ORIGINAL FORK - REPLACE WITH MY OWN VERSION ######
 if [[ $getOutput == "true" ]]; then
+	echo "reading output for job $jobNumber"
 	glite-wms-job-output -i JOBID/jobID_$jobNumber --dir ./ 2>/dev/null
 fi
 	
