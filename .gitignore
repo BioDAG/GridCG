@@ -1,0 +1,23 @@
+# Do not commit input data, i.e fasta files
+*.faa
+*.fasta
+
+# Do not commit the generated jdl files, anyone can produce it using the shared Java code
+*.jdl
+
+# Do not commit Java binary files (.class)
+*.class
+
+# Do not commit output data
+*.blast
+*.bh
+*.bbh
+
+# Do not commit jobID files
+jobID_*
+
+# Do not commit nohup output
+nohup.out
+
+# Do not commit the jdl directory (jdl_collection/ by default)
+jdl_collection/

@@ -58,6 +58,7 @@ for file in `ls`; do
     glite-wms-job-submit -o JOBID/jobID_$jobNumber -a $file
     nohup ./handleJob.sh $file $jobNumber &
     let "jobNumber++"
+    sleep 1000
     #glite-wms-job-submit -a -o jobID --endpoint https://wms01.afroditi.hellasgrid.gr:7443/glite_wms_wmproxy_server $file
   fi
 done
