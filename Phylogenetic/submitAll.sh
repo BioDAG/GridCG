@@ -58,6 +58,8 @@ for file in `ls`; do
     glite-wms-job-submit -o JOBID/jobID_$jobNumber -a $file
     nohup ./handleJob.sh $file $jobNumber &
     let "jobNumber++"
+    # increase this to 1 hour for optimal result?
+    sleep 60
     #glite-wms-job-submit -a -o jobID --endpoint https://wms01.afroditi.hellasgrid.gr:7443/glite_wms_wmproxy_server $file
   fi
 done
