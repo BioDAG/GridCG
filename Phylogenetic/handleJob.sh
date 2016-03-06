@@ -59,10 +59,12 @@ CancelAndResubmit(){
 	fi
      
 	if [[ -z $error ]]; then
-        	echo "New job submitted"
+        echo "Job $jobNumber succesfully resubmitted"
+        # Update startTime....is this really needed?
+        startTime=$(date +"%Y%m%d %T")
 		return 0
 	else
-		echo "error when resubmitting: $error"
+		echo "error when resubmitting job $jobNumber: $error"
 		return 1
 	fi
 }

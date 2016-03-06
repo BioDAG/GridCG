@@ -14,35 +14,16 @@ fi
 ORGANISMS=$1
 
 mkdir -p Blast_output
-mkdir -p BH_output
+mkdir -p Phylo_output
 
 #mv `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
 cp `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
 #mv `find jdl_collection/JOBID/steremma_* -name "*.bh"` BH_output/
-cp `find jdl_collection/JOBID/steremma_* -name "*.bh"` BH_output/
+cp `find jdl_collection/JOBID/steremma_* -name "*.phylo"` Phylo_output/
 
 #rm -r jdl_collection/JOBID/steremma_*
 
-if [ ! -d "BH_output" ]; then
-	echo "directory BH_output does not exist!"
-	exit 1
-fi
-
-cd BH_output
-for file in `ls`; do
-	if [[ $file == *.bh ]]; then
-		stripped_file="${file%.*}"
-		echo $stripped_file
-		# F = substr attempts to capture the 2nd organism name in the BH line.
-		awk -v var="$stripped_file" '{F=substr($0,23,8);print >> var"_"F".bh";close(F)}' $file
-		rm $file
-	fi
-done
-cd ..
-
-# Combine BH files to create BBH files. Default output directory is BBH/ .
-javac javaTools/combineBH/*.java
-java javaTools/combineBH/CombineBH BH_output $ORGANISMS
+# MAYBE DO SOMETHING....???
 
 
 

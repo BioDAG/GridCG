@@ -46,6 +46,8 @@ DATABASE=$1
 lcg-cp lfn:/grid/see/steremma/$DATABASE file:$DATABASE
 QUERY=$2
 ORGANISMS=$3
+# Temp fix for isBBH, should be passed by the args field in the jdl.
+isBBH=false
 output="${QUERY%.*}.blast"
 
 # Comment out the following line if running on local machine (blast already installed).
@@ -65,12 +67,15 @@ end=`date +%s`
 runtime=$((end-start))
 echo -e "\e[31m blast runtime is: $runtime seconds \e[0m"
 
-echo "feeding blast to BBH.py"
-start=`date +%s`
-
-# This is the only thing different between the regular and BBH version of this executable.
-chmod +x BBH.py
-./BBH.py $output $ORGANISMS
+if [[ $isBBH == "true" ]]; then
+    echo "feeding blast to BBH.py"
+    chmod +x BBH.py
+    ./BBH.py $output $ORGANISMS
+else
+    echo "feeding blast to phylogenetic.py"
+    chmod +x phylogenetic.py
+    ./phylogenetic.py $output $ORGANISMS
+fi
 
 end=`date +%s`
 
