@@ -15,8 +15,10 @@ function getBlast {
 		# I could just download the 32 bit version..IF IT EXISTED!! :)
         echo "I'm 32-bit, SOMETHING WILL GO WRONG NOW"
     fi
-	
-    wget --prefer-family=IPv4 -T 1000 ftp://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-$version+-x64-linux.tar.gz
+    
+    address="ftp://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-$version+-x64-linux.tar.gz"	
+    wget --prefer-family=IPv4 -T 1000 $address 2>$1 >> /dev/null 2>&1
+    #wget --prefer-family=IPv4 -T 1000 ftp://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-$version+-x64-linux.tar.gz
     #wget --prefer-family=IPv4 -T 1000 ftp://ftp.ncbi.nlm.nih.gov/blast/executables/$version/ncbi-blast-$version+-x64-linux.tar.gz
 
     gunzip -d ncbi-blast-$version+-x64-linux.tar.gz
