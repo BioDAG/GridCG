@@ -1,5 +1,20 @@
 #!/bin/bash
 
+Submit(){
+	# Keep trying to submit at all costs!
+	num=$1
+	jdl=$2
+	submit_error="not empty"
+	while [[ -n $submit_error ]]; do
+		submit_error="" # Is this really necessary?
+		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep "Error -")
+		if [[ -z $submit_error ]]
+			echo "job $num submitted for the 1st time!"
+		fi
+		sleep 60
+	done		
+}
+
 # This script tries to submit multiple blast jobs
 if [ "$#" -ne 4 ]; then
     echo "Wrong number of arguments"
@@ -55,7 +70,7 @@ mkdir JOBID
 declare -i jobNumber=1
 for file in `ls`; do
   if [[ $file == *.jdl ]]; then
-    glite-wms-job-submit -o JOBID/jobID_$jobNumber -a $file
+    Submit $jobNumber $file	
     nohup ./handleJob.sh $file $jobNumber &
     let "jobNumber++"
     sleep 1000
