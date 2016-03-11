@@ -4,11 +4,14 @@ Submit(){
 	# Keep trying to submit at all costs!
 	num=$1
 	jdl=$2
+	# Temporarily use this endpoint for max job count.
+	endpoint="https://wms01.afroditi.hellasgrid.gr:7443/glite_wms_wmproxy_server"
 	submit_error="not empty"
 	while [[ -n $submit_error ]]; do
 		submit_error="" # Is this really necessary?
-		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep "Error -")
-		if [[ -z $submit_error ]]
+		# submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep "Error -")
+		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep "Error -")		
+		if [[ -z $submit_error ]]; then
 			echo "job $num submitted for the 1st time!"
 		fi
 		sleep 60

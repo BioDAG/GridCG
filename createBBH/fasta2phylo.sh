@@ -1,4 +1,5 @@
 #!/bin/bash
+/bin/hostname -f
 
 # Helper function to install blast on remote machine, if it's not already installed.
 function getBlast {
