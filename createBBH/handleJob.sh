@@ -59,8 +59,10 @@ CancelAndResubmit(){
 	fi
      
 	if [[ -z $error ]]; then
-        echo "job $jobNumber succesfully resubmitted"
-		startTime=$(date +"%Y%m%d %T")
+                echo "job $jobNumber succesfully resubmitted"
+		echo "Resubmitted job $jobNumber at time: " >> ../timestamp.out
+		date >> ../timestamp.out
+                startTime=$(date +"%Y%m%d %T")
 		return 0	
 	else
 		echo "error when resubmitting job $jobNumber: $error"
@@ -149,7 +151,7 @@ while $run; do
 		if [[ ! -z $error ]]; then
 		    echo "status was unknown, retrying, error: $error"
 			# Try again to read the status.
-			sleep 10
+			sleep 100
 			currentStatus=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Current Status" | cut -d":" -f 2 | tr -d ' ')
 			continue
 			#echo "Something is wrong with the grid because status is $currentStatus and error is $error"
@@ -168,6 +170,8 @@ done
 ###### DELETED THIS PART FROM ORIGINAL FORK - REPLACE WITH MY OWN VERSION ######
 if [[ $getOutput == "true" ]]; then
 	echo "reading output for job $jobNumber"
+	echo "retrieving output for job $jobNumber at time: " >> ../timestamp.out
+        date >> ../timestamp.out
 	glite-wms-job-output -i JOBID/jobID_$jobNumber --dir ./ 2>/dev/null
 fi
 	

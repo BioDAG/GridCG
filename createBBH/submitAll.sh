@@ -13,6 +13,8 @@ Submit(){
 		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep "Error -")		
 		if [[ -z $submit_error ]]; then
 			echo "job $num submitted for the 1st time!"
+			echo "submitted job $num at: " >> ../timestamp.out
+			date >> ../timestamp.out
 		fi
 		sleep 60
 	done		
@@ -77,7 +79,6 @@ for file in `ls`; do
     nohup ./handleJob.sh $file $jobNumber &
     let "jobNumber++"
     sleep 1000
-    #glite-wms-job-submit -a -o jobID --endpoint https://wms01.afroditi.hellasgrid.gr:7443/glite_wms_wmproxy_server $file
   fi
 done
 
