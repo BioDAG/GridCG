@@ -14,8 +14,8 @@
 
 jdl=${1}
 jobNumber=${2}
+numJobs=${3}
 jobType="s"
-
 
 ################################################################################
 #                                                                              #
@@ -36,6 +36,13 @@ Unzip(){
         mv $dataFolder ../$outFolder/
         cd ..
         rm -rf tmpdir
+}
+CheckFinished(){
+# Checks whether every job's output has been retrieved	
+	jobsDone=$(ls | grep steremma | wc -l)
+	if [[ $jobsDone -eq $numJobs ]]; then
+		finished="true"
+	fi
 }
 
 Time(){
@@ -81,6 +88,7 @@ run="true"
 fallAsleep=0
 sameJobRuns=0
 getOutput="false"
+finished="false"
 echo "......."
 sleep 60
 startTime=$(date +"%Y%m%d %T")
@@ -173,6 +181,11 @@ if [[ $getOutput == "true" ]]; then
 	currentTime=$(date +"%Y-%m-%d %T")
 	echo "retrieving output for job $jobNumber at time: $currentTime" >> ../timestamp.out
 	glite-wms-job-output -i JOBID/jobID_$jobNumber --dir ./ 2>/dev/null
+	CheckFinished
+	if [[ "$finished" = true ]]; then
+		currentTime=$(date +"%Y-%m-%d %T")
+		echo "Everything is finished at time: $currentTime" >> ../timestamp.out
+	fi
 fi
 	
 

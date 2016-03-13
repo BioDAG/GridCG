@@ -73,10 +73,13 @@ cp handleJob.sh $JDL_DIR
 cd $JDL_DIR
 mkdir JOBID
 declare -i jobNumber=1
+currentTime=$(date +"%Y-%m-%d %T")
+echo "Beginning the submission at time: $currentTime" >> ../timestamp.out
+numJobs=$(ls | grep .jdl | wc -l)
 for file in `ls`; do
   if [[ $file == *.jdl ]]; then
     Submit $jobNumber $file	
-    nohup ./handleJob.sh $file $jobNumber &
+    nohup ./handleJob.sh $file $jobNumber $numJobs &
     let "jobNumber++"
     sleep 1000
   fi
