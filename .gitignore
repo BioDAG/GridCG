@@ -19,5 +19,11 @@ jobID_*
 # Do not commit nohup output
 nohup.out
 
-# Do not commit the jdl directory (jdl_collection/ by default)
+# Do not commit the jdl directory (jdl_collection/ by default) or other output dirs.
 jdl_collection/
+Phylo_output/
+BH_output/
+Blast_output/
+
+# Do not commit timestamps
+timestamp.out

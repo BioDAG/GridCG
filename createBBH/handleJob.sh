@@ -59,10 +59,10 @@ CancelAndResubmit(){
 	fi
      
 	if [[ -z $error ]]; then
-                echo "job $jobNumber succesfully resubmitted"
-		echo "Resubmitted job $jobNumber at time: " >> ../timestamp.out
-		date >> ../timestamp.out
-                startTime=$(date +"%Y%m%d %T")
+        echo "job $jobNumber succesfully resubmitted"
+        currentTime=$(date +"%Y-%m-%d %T")
+		echo "Resubmitted job $jobNumber at: $currentTime" >> ../timestamp.out
+        startTime=$(date +"%Y%m%d %T")
 		return 0	
 	else
 		echo "error when resubmitting job $jobNumber: $error"
@@ -170,8 +170,8 @@ done
 ###### DELETED THIS PART FROM ORIGINAL FORK - REPLACE WITH MY OWN VERSION ######
 if [[ $getOutput == "true" ]]; then
 	echo "reading output for job $jobNumber"
-	echo "retrieving output for job $jobNumber at time: " >> ../timestamp.out
-        date >> ../timestamp.out
+	currentTime=$(date +"%Y-%m-%d %T")
+	echo "retrieving output for job $jobNumber at time: $currentTime" >> ../timestamp.out
 	glite-wms-job-output -i JOBID/jobID_$jobNumber --dir ./ 2>/dev/null
 fi
 	

@@ -67,6 +67,7 @@ end=`date +%s`
 runtime=$((end-start))
 echo -e "\e[31m blast runtime is: $runtime seconds \e[0m"
 
+start=`date +%s`
 if [[ $isBBH == "true" ]]; then
     echo "feeding blast to BBH.py"
     chmod +x BBH.py

@@ -13,8 +13,8 @@ Submit(){
 		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep "Error -")		
 		if [[ -z $submit_error ]]; then
 			echo "job $num submitted for the 1st time!"
-			echo "submitted job $num at: " >> ../timestamp.out
-			date >> ../timestamp.out
+			currentTime=$(date +"%Y-%m-%d %T")
+			echo "submitted job $num at: $currentTime" >> ../timestamp.out
 		fi
 		sleep 60
 	done		
