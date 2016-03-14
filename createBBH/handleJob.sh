@@ -56,6 +56,7 @@ Time(){
 }
 
 CancelAndResubmit(){
+	retryCount=0
 	echo "i will cancel job $jobNumber"
 	echo "y" | glite-wms-job-cancel -i JOBID/jobID_$jobNumber >> /dev/null 2>&1
 	rm JOBID/jobID_$jobNumber
@@ -72,7 +73,9 @@ CancelAndResubmit(){
         startTime=$(date +"%Y%m%d %T")
 		return 0	
 	else
+		# Sometimes, resubmission fails. I will try to resubmit again.
 		echo "error when resubmitting job $jobNumber: $error"
+		sleep 100
 		return 1
 	fi
 }
@@ -157,14 +160,9 @@ while $run; do
 		# Code sometimes randomly reaches here, even though status is running or scheduled causing the script to exit.
 		error=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Unable to find" | grep "$jobID")
 		if [[ ! -z $error ]]; then
-		    echo "status was unknown, retrying, error: $error"
-			# Try again to read the status.
-			sleep 100
-			currentStatus=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Current Status" | cut -d":" -f 2 | tr -d ' ')
-			continue
-			#echo "Something is wrong with the grid because status is $currentStatus and error is $error"
-            #exit 4
-
+		    echo "error: $error"
+			sleep 200
+			CancelAndResubmit
 		fi
 		sleep 60
 	fi
