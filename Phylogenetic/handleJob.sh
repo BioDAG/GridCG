@@ -14,7 +14,9 @@
 
 jdl=${1}
 jobNumber=${2}
+numJobs=${3}
 jobType="s"
+timestamp="../timestamp.out"
 
 
 ################################################################################
@@ -36,6 +38,14 @@ Unzip(){
         mv $dataFolder ../$outFolder/
         cd ..
         rm -rf tmpdir
+}
+
+CheckFinished(){
+# Checks whether every job's output has been retrieved	
+	jobsDone=$(ls | grep steremma | wc -l)
+	if [[ $jobsDone -eq $numJobs ]]; then
+		finished="true"
+	fi
 }
 
 Time(){
@@ -60,11 +70,13 @@ CancelAndResubmit(){
      
 	if [[ -z $error ]]; then
         echo "Job $jobNumber succesfully resubmitted"
-        # Update startTime....is this really needed?
+        currentTime=$(date +"%Y-%m-%d %T")
+		echo "Resubmitted job $jobNumber at: $currentTime" >> "$timestamp"
         startTime=$(date +"%Y%m%d %T")
 		return 0
 	else
 		echo "error when resubmitting job $jobNumber: $error"
+		sleep 100
 		return 1
 	fi
 }
@@ -80,6 +92,7 @@ run="true"
 fallAsleep=0
 sameJobRuns=0
 getOutput="false"
+finished="false"
 echo "......."
 sleep 60
 startTime=$(date +"%Y%m%d %T")
@@ -143,19 +156,14 @@ while $run; do
 		fi    	
 	elif [[ $currentStatus == "Ready" ||  $currentStatus == "Submitted" || $currentStatus == "Scheduled" || $currentStatus == "Waiting" ]]; then
 		echo "Waiting for job $jobNumber to start running..."
-		sleep 120
+		sleep 600
 	else
 		# Code sometimes randomly reaches here, even though status is running or scheduled causing the script to exit.
 		error=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Unable to find" | grep "$jobID")
 		if [[ ! -z $error ]]; then
-		    echo "status was unknown, retrying, error: $error"
-			# Try again to read the status.
-			sleep 10
-			currentStatus=$(glite-wms-job-status -i JOBID/jobID_$jobNumber 2>&1 | grep "Current Status" | cut -d":" -f 2 | tr -d ' ')
-			continue
-			#echo "Something is wrong with the grid because status is $currentStatus and error is $error"
-            #exit 4
-
+			echo "error: $error"
+			sleep 200
+			CancelAndResubmit
 		fi
 		sleep 60
 	fi
@@ -168,7 +176,15 @@ done
 ################################################################################
 ###### DELETED THIS PART FROM ORIGINAL FORK - REPLACE WITH MY OWN VERSION ######
 if [[ $getOutput == "true" ]]; then
+	echo "reading output for job $jobNumber"
+	currentTime=$(date +"%Y-%m-%d %T")
+	echo "retrieving output for job $jobNumber at time: $currentTime" >> "$timestamp"
 	glite-wms-job-output -i JOBID/jobID_$jobNumber --dir ./ 2>/dev/null
+	CheckFinished
+	if [[ "$finished" = true ]]; then
+		currentTime=$(date +"%Y-%m-%d %T")
+		echo "Everything is finished at time: $currentTime" >> "$timestamp"
+	fi
 fi
 	
 

@@ -1,5 +1,25 @@
 #!/bin/bash
 
+Submit(){
+	# Keep trying to submit at all costs!
+	num=$1
+	jdl=$2
+	# Temporarily use this endpoint for max job count.
+	endpoint="https://wms01.afroditi.hellasgrid.gr:7443/glite_wms_wmproxy_server"
+	submit_error="not empty"
+	while [[ -n $submit_error ]]; do
+		submit_error="" # Is this really necessary?
+		# submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep "Error -")
+		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep "Error -")		
+		if [[ -z $submit_error ]]; then
+			echo "job $num submitted for the 1st time!"
+			currentTime=$(date +"%Y-%m-%d %T")
+			echo "submitted job $num at: $currentTime" >> "$timestamp"
+		fi
+		sleep 60
+	done		
+}
+
 # This script tries to submit multiple blast jobs
 if [ "$#" -ne 4 ]; then
     echo "Wrong number of arguments"
@@ -11,6 +31,7 @@ DATABASE=$1
 QUERY_DIR=$2
 ORGANISMS=$3
 VO=$4
+timestamp="../timestamp.out"
 
 javac javaTools/submit/*.java
 java javaTools/submit/Submit $DATABASE $QUERY_DIR $ORGANISMS $VO
@@ -53,14 +74,15 @@ cp handleJob.sh $JDL_DIR
 cd $JDL_DIR
 mkdir JOBID
 declare -i jobNumber=1
+currentTime=$(date +"%Y-%m-%d %T")
+echo "Beginning the submission at time: $currentTime" >> "$timestamp"
+numJobs=$(ls | grep .jdl | wc -l)
 for file in `ls`; do
   if [[ $file == *.jdl ]]; then
-    glite-wms-job-submit -o JOBID/jobID_$jobNumber -a $file
-    nohup ./handleJob.sh $file $jobNumber &
+    Submit $jobNumber $file	
+    nohup ./handleJob.sh $file $jobNumber $numJobs &
     let "jobNumber++"
-    # increase this to 1 hour for optimal result?
-    sleep 60
-    #glite-wms-job-submit -a -o jobID --endpoint https://wms01.afroditi.hellasgrid.gr:7443/glite_wms_wmproxy_server $file
+    sleep 1000
   fi
 done
 
