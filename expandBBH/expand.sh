@@ -31,6 +31,8 @@ NEW_FASTA_DIR=$1
 OLD_FASTA_DIR=$2
 NEW_ORGS=$3
 OLD_ORGS=$4
+# The Virtual Organization should be read as an additional argument.
+VO="see"
 
 # Combine old and new organism identifier files (GenomeOLD - GenomeNEW)
 FULL_ORGS="GenomeBoth"
@@ -45,8 +47,8 @@ cat $OLD_FASTA_DIR/*.faa > $OLD_DB
 cat $OLD_DB $NEW_DB > $FULL_DB
 
 # Blast and profile the new organisms vs the full database.
-./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS
-./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS
+./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO
+./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO
 
 # Clean up
 rm $NEW_DB

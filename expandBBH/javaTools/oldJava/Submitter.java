@@ -17,7 +17,7 @@ public class Submitter {
 	{
 		String phyloExtension = (isBBH) ? ".bh" : ".phylo";
 		String phyloExecutable = (isBBH) ? "../BBH.py" : "../phylogenetic.py";
-		String VO = "biomed";
+		String VO = "see";
 		output = Utils.appendSlash(output);
 		System.out.println("Generating jdl files for " + ((isBBH) ? "BBH PHYLO" : "REGULAR PHYLO") + " jobs");
 		boolean status = Utils.emptyDirectory(output);
@@ -32,7 +32,10 @@ public class Submitter {
     			writer.println("JobType = \"Normal\";");
     			writer.println("Executable = \"fasta2phylo.sh\";");
     			writer.println("Arguments = \"" + databaseFasta + " " + part + " " + organisms + "\";");
-    			writer.println("InputSandBox = {\"../fasta2phylo.sh\",\"../" +databaseFasta +"\",\"../"
+    			// Remove database since it will be downloaded from a SE.
+    			//writer.println("InputSandBox = {\"../fasta2phylo.sh\",\"../" +databaseFasta +"\",\"../"
+				//				+this.queryDir+part +"\",\"" + phyloExecutable + "\",\"../" + organisms + "\"};");
+				writer.println("InputSandBox = {\"../fasta2phylo.sh\",\"../"
 								+this.queryDir+part +"\",\"" + phyloExecutable + "\",\"../" + organisms + "\"};");
     			writer.println("stdOutput = \"std.out\";");
     			writer.println("stdError = \"std.err\";");

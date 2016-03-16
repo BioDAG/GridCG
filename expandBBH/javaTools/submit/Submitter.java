@@ -1,4 +1,4 @@
-package blastUtils;
+package javaTools.submit;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,12 +12,12 @@ public class Submitter {
 	private String queryDir;
 	private ArrayList<String> queryFasta;
 	private String organisms;
+	private String VO;
 	
 	public boolean generateJDLs(String output,boolean isBBH)
 	{
 		String phyloExtension = (isBBH) ? ".bh" : ".phylo";
 		String phyloExecutable = (isBBH) ? "../BBH.py" : "../phylogenetic.py";
-		String VO = "see";
 		output = Utils.appendSlash(output);
 		System.out.println("Generating jdl files for " + ((isBBH) ? "BBH PHYLO" : "REGULAR PHYLO") + " jobs");
 		boolean status = Utils.emptyDirectory(output);
@@ -32,15 +32,18 @@ public class Submitter {
     			writer.println("JobType = \"Normal\";");
     			writer.println("Executable = \"fasta2phylo.sh\";");
     			writer.println("Arguments = \"" + databaseFasta + " " + part + " " + organisms + "\";");
-    			writer.println("InputSandBox = {\"../fasta2phylo.sh\",\"../" +databaseFasta +"\",\"../"
+    			// Remove database since it will be downloaded from a SE.
+    			//writer.println("InputSandBox = {\"../fasta2phylo.sh\",\"../" +databaseFasta +"\",\"../"
+				//				+this.queryDir+part +"\",\"" + phyloExecutable + "\",\"../" + organisms + "\"};");
+				writer.println("InputSandBox = {\"../fasta2phylo.sh\",\"../"
 								+this.queryDir+part +"\",\"" + phyloExecutable + "\",\"../" + organisms + "\"};");
     			writer.println("stdOutput = \"std.out\";");
     			writer.println("stdError = \"std.err\";");
     			writer.println("OutputSandbox = {\"std.out\",\"std.err\",\""+Utils.stripExtension(part)+".blast"
 								+"\",\""+Utils.stripExtension(part)+phyloExtension+"\"};");
     			writer.println("VirtualOrganisation = \""+VO+"\";");
-    			//writer.println("Requirements = (other.GlueCEInfoHostName == \"cream01.grid.auth.gr\") ||"
-    			//		+ " (other.GlueCEInfoHostName == \"cream.afroditi.hellasgrid.gr\");");
+    			writer.println("Requirements = (other.GlueCEInfoHostName == \"cream01.grid.auth.gr\") ||"
+    					+ " (other.GlueCEInfoHostName == \"cream.afroditi.hellasgrid.gr\");");
 
     		} catch (FileNotFoundException e) {
     			System.out.println("generateJDL failed, output path could not be found");
@@ -80,11 +83,12 @@ public class Submitter {
 		return queryFasta;
 	}
 
-	public Submitter(String databaseFasta, String queryDir, String organisms) {
+	public Submitter(String databaseFasta, String queryDir, String organisms, String VO) {
 		super();
 		this.organisms = organisms;
 		this.databaseFasta = databaseFasta;
 		this.queryDir = Utils.appendSlash(queryDir);
+		this.VO = VO;
 		File input = new File(queryDir);
 		File[] listOfFiles = input.listFiles(); // NOT IN ORDER!
 		Arrays.sort(listOfFiles);
