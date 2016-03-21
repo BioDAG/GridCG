@@ -16,14 +16,7 @@ ORGANISMS=$1
 mkdir -p Blast_output
 mkdir -p Phylo_output
 
-#mv `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
-cp `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
-#mv `find jdl_collection/JOBID/steremma_* -name "*.bh"` BH_output/
-cp `find jdl_collection/JOBID/steremma_* -name "*.phylo"` Phylo_output/
-
-#rm -r jdl_collection/JOBID/steremma_*
-
-# MAYBE DO SOMETHING....???
-
-
-
+#mv `find jdl_collection/steremma_* -name "*.blast"` Blast_output/
+cp `find jdl_collection/steremma_* -name "*.blast"` Blast_output/
+#mv `find jdl_collection/steremma_* -name "*.bh"` BH_output/
+cp `find jdl_collection/steremma_* -name "*.phylo"` Phylo_output/
