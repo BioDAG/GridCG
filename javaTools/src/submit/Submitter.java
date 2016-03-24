@@ -17,13 +17,10 @@ public class Submitter {
 	
 	public boolean generateJDLs(String output,boolean isBBH) throws IOException
 	{
-		String username = "steremma";
-		String baseDir = "/home/" + username + "/Thesis/scripts/";
 		String phyloExtension = (isBBH) ? ".bh" : ".phylo";
-		//String phyloExecutable = baseDir + "blast2phylo.py";
-		String phyloExecutable = "../blast2phylo.py";
-		//String gridExecutable = baseDir + "gridExecutable.sh";
-		String gridExecutable = "../gridExecutable.sh";
+		String scriptFolder = "../scripts/";
+		String phyloExecutable = "blast2phylo.py";
+		String gridExecutable = "gridExecutable.sh";
 
 		output = Utils.appendSlash(output);
 		System.out.println("Generating jdl files for " + ((isBBH) ? "BBH PHYLO" : "REGULAR PHYLO") + " jobs");
@@ -42,9 +39,9 @@ public class Submitter {
     			writer.println("Type = \"Job\";");
     			writer.println("JobType = \"Normal\";");
     			writer.println("Executable = \"" + gridExecutable + "\";");
-    			writer.println("Arguments = \"" + databaseFasta + " " + part + " " + organisms + "\";");
-			writer.println("InputSandBox = {\"" + gridExecutable + "\",\""
-					+this.queryDir+part +"\",\"" + phyloExecutable + "\",\"" + organisms + "\"};");
+    			writer.println("Arguments = \"" + databaseFasta + " " + part + " " + organisms + " " + isBBH + "\";");
+			writer.println("InputSandBox = {\"" + scriptFolder +  gridExecutable + "\",\""
+					+this.queryDir+part +"\",\"" + scriptFolder + phyloExecutable + "\",\"" + organisms + "\"};");
     			writer.println("stdOutput = \"std.out\";");
     			writer.println("stdError = \"std.err\";");
     			writer.println("OutputSandbox = {\"std.out\",\"std.err\",\""+Utils.stripExtension(part)+".blast"

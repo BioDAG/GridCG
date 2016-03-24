@@ -35,7 +35,7 @@ function getBlast {
 
 if [ "$#" -ne 4 ]; then
     echo "Illegal number of parameters"
-    echo "USAGE: fasta2phylo.sh <database.fasta> <query.fasta> <organisms.txt> <isBBH>"
+    echo "USAGE: gridExecutable.sh <database.fasta> <query.fasta> <organisms.txt> <isBBH>"
     exit 1
 fi
 
@@ -44,18 +44,18 @@ export LFC_HOST=lfc.isabella.grnet.gr
 export LCG_GFAL_INFOSYS=bdii.isabella.grnet.gr:2170   
 export LCG_GFAL_VO=see  
 
-DATABASE=$1
+DATABASE=${1##*/}
 # Download database from the SE.
 lcg-cp lfn:/grid/see/steremma/$DATABASE file:$DATABASE
-QUERY=$2
-ORGANISMS=$3
+QUERY=${2##*/}
+ORGANISMS=${3##*/}
 isBBH=$4
 output="${QUERY%.*}.blast"
 
 # Comment out the following line if running on local machine (blast already installed).
 blast_version="2.3.0"
 #blast_version="2.2.31"
-#getBlast $blast_version
+getBlast $blast_version
 
 start=`date +%s`
 

@@ -85,7 +85,7 @@ for file in `ls`; do
     Submit $jobNumber $file	
     nohup ./handleJob.sh $file $jobNumber $numJobs $timestamp &
     let "jobNumber++"
-    sleep 1000 # Set me to 1 hour
+    sleep 60 # Set me to 1 hour
   fi
 done
 
