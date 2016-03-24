@@ -1,8 +1,10 @@
-package javaTools.submit;
+package submit;
+
+import java.io.IOException;
 
 public class Submit {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		if(args.length != 5) {
 			System.out.println(printUsage());

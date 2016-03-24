@@ -1,4 +1,4 @@
-package javaTools.submit;
+package submit;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,19 +14,15 @@ public class Utils {
 	
 	private Utils() {} // Make sure no client can instantiate this class.
 	
-	public static boolean emptyDirectory(String dir)
-	{
-		File jdlCollection = new File(dir);
-        boolean status = jdlCollection.mkdirs();
-        if(!status) {
-        	System.out.println(dir + " directory already exists, deleting previous contents");
-        	File[] listOfFiles = jdlCollection.listFiles();
-            for (int i = 0; i < listOfFiles.length; i++) {
-                listOfFiles[i].delete();
-            }
-            status = true; // I don't consider existence of the dir to be an error.
-        }
-		return status;
+	public static void delete(File f) throws IOException {
+		  if(!f.exists()) 
+			  return;
+		  if (f.isDirectory()) {
+		    for (File c : f.listFiles())
+		      delete(c);
+		  }
+		  if (!f.delete())
+		    throw new FileNotFoundException("Failed to delete file: " + f);
 	}
 	public static ArrayList<String> readOrgs(String orgFile) throws FileNotFoundException
 	{

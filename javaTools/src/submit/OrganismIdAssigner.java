@@ -1,4 +1,4 @@
-package javaTools.submit;
+package submit;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

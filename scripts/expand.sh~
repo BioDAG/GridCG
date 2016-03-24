@@ -48,10 +48,10 @@ cat $OLD_FASTA_DIR/*.faa > $OLD_DB
 cat $OLD_DB $NEW_DB > $FULL_DB
 
 # Blast and profile the old organisms vs the new database.
-./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO $isBBH
+./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO
 
 # Blast and profile the new organisms vs the full database.
-./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO $isBBH
+./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO
 
 # Clean up
 rm $NEW_DB

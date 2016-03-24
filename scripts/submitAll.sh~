@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 Submit(){
 	# Keep trying to submit at all costs!
@@ -10,7 +11,7 @@ Submit(){
 	while [[ -n $submit_error ]]; do
 		submit_error="" # Is this really necessary?
 		# submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep "Error -")
-		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep "Error -")	
+		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep "Error -")		
 		if [[ -z $submit_error ]]; then
 			echo "job $num submitted for the 1st time!"
 			currentTime=$(date +"%Y-%m-%d %T")
@@ -73,19 +74,19 @@ rm log
 # NOTE: submission will work only when called from inside the JDL_DIR.
 # Thats why navigation (cd's) is needed.
 cd $JDL_DIR
-cp /home/steremma/Thesis/scripts/handleJob.sh ./
+cp /home/manos/Thesis/scripts/handleJob.sh ./
 mkdir JOBID
 declare -i jobNumber=1
 currentTime=$(date +"%Y-%m-%d %T")
-echo "Beginning the submission at time: $currentTime" > "$timestamp"
+echo "Beginning the submission at time: $currentTime" >> "$timestamp"
 numJobs=$(ls | grep .jdl | wc -l)
 for file in `ls`; do
-  echo $file
+echo $file
   if [[ $file == *.jdl ]]; then
     Submit $jobNumber $file	
-    nohup ./handleJob.sh $file $jobNumber $numJobs $timestamp &
+    nohup ./handleJob.sh $file $jobNumber $numJobs &
     let "jobNumber++"
-    sleep 1000 # Set me to 1 hour
+    sleep 60 # Set me to 1 hour
   fi
 done
 
