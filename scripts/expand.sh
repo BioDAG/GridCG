@@ -16,23 +16,13 @@ if [ "$#" -ne 5 ]; then
     exit 1
 fi
 
-# Check that BH_output and Blast_output do exist.
-if [ ! -d "BH_output" ]; then
-	echo "directory BH_output does not exist!"
-	exit 1
-fi
-if [ ! -d "Blast_output" ]; then
-	echo "directory Blast_output does not exist!"
-	exit 1
-fi
-
 # Read arguments
 NEW_FASTA_DIR=$1
 OLD_FASTA_DIR=$2
 NEW_ORGS=$3
 OLD_ORGS=$4
 isBBH=$5
-# The Virtual Organization should be read as an additional argument.
+# The Virtual Organization should maybe be read as an additional argument.
 VO="see"
 
 # Combine old and new organism identifier files (GenomeOLD - GenomeNEW)
@@ -48,10 +38,10 @@ cat $OLD_FASTA_DIR/*.faa > $OLD_DB
 cat $OLD_DB $NEW_DB > $FULL_DB
 
 # Blast and profile the old organisms vs the new database.
-./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO $isBBH
+submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO $isBBH
 
 # Blast and profile the new organisms vs the full database.
-./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO $isBBH
+submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO $isBBH
 
 # Clean up
 rm $NEW_DB

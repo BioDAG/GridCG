@@ -10,11 +10,13 @@ Submit(){
 	while [[ -n $submit_error ]]; do
 		submit_error="" # Is this really necessary?
 		# submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep "Error -")
-		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep "Error -")	
+		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep -A 1 "Error -")	
 		if [[ -z $submit_error ]]; then
 			echo "job $num submitted for the 1st time!"
 			currentTime=$(date +"%Y-%m-%d %T")
 			echo "submitted job $num at: $currentTime" >> "$timestamp"
+		else
+			echo $submit_error
 		fi
 		sleep 60
 	done		
@@ -34,8 +36,10 @@ VO=$4
 isBBH=$5
 timestamp="../timestamp.out"
 
-javac -d ../javaTools/bin ../javaTools/src/submit/*.java
-JDL_DIR=`java -cp ../javaTools/bin submit/Submit $DATABASE $QUERY_DIR $ORGANISMS $VO $isBBH`
+javaDir="/home/steremma/Thesis/javaTools"
+javac -d $javaDir/bin $javaDir/src/submit/*.java
+JDL_DIR=`java -cp $javaDir/bin submit/Submit $DATABASE $QUERY_DIR $ORGANISMS $VO $isBBH`
+
 
 
 # Assuming default jdl directory in Java code.
@@ -75,16 +79,16 @@ rm log
 cd $JDL_DIR
 cp /home/steremma/Thesis/scripts/handleJob.sh ./
 mkdir JOBID
-declare -i jobNumber=1
+declare -i jobNumber=$(ls JOBID/ | wc -l)
 currentTime=$(date +"%Y-%m-%d %T")
-echo "Beginning the submission at time: $currentTime" > "$timestamp"
+echo "Beginning the submission at time: $currentTime" >> "$timestamp"
 numJobs=$(ls | grep .jdl | wc -l)
 for file in `ls`; do
   echo $file
   if [[ $file == *.jdl ]]; then
+    let "jobNumber++"
     Submit $jobNumber $file	
     nohup ./handleJob.sh $file $jobNumber $numJobs $timestamp &
-    let "jobNumber++"
     sleep 60 # Set me to 1 hour
   fi
 done

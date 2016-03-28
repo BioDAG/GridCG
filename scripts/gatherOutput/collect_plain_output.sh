@@ -6,17 +6,17 @@ set -e
 # 1 blast (.blast extension) and 1 phylogenetic (.bh extension) output file.
 
 if [ "$#" -ne 1 ]; then
-    echo "USAGE: collect_output.sh <organisms.txt>"
+    echo "USAGE: collect_output.sh <output_base_direcory>"
     E_ARGS=85
     exit $E_ARGS
 fi
 
-ORGANISMS=$1
+jdl_collection=$1
 
 mkdir -p Blast_output
 mkdir -p Phylo_output
 
-#mv `find jdl_collection/steremma_* -name "*.blast"` Blast_output/
-cp `find jdl_collection/steremma_* -name "*.blast"` Blast_output/
-#mv `find jdl_collection/steremma_* -name "*.bh"` BH_output/
-cp `find jdl_collection/steremma_* -name "*.phylo"` Phylo_output/
+#mv `find $jdl_collection/steremma_* -name "*.blast"` Blast_output/
+cp `find $jdl_collection/steremma_* -name "*.blast"` Blast_output/
+#mv `find $jdl_collection/steremma_* -name "*.phylo"` Phylo_output/
+cp `find $jdl_collection/steremma_* -name "*.phylo"` Phylo_output/

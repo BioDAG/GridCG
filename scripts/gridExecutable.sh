@@ -67,7 +67,7 @@ rm -r script_db
 end=`date +%s`
 
 runtime=$((end-start))
-echo -e "\e[31m blast runtime is: $runtime seconds \e[0m"
+echo -e "blast runtime is: $runtime seconds "
 
 start=`date +%s`
 
@@ -86,5 +86,5 @@ chmod +x blast2phylo.py
 end=`date +%s`
 
 runtime=$((end-start))
-echo -e "\e[34m phylogenetic runtime is: $runtime seconds \e[0m"
+echo -e "phylogenetic runtime is: $runtime seconds "
 

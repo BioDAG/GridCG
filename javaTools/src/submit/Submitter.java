@@ -26,8 +26,13 @@ public class Submitter {
 		System.out.println("Generating jdl files for " + ((isBBH) ? "BBH PHYLO" : "REGULAR PHYLO") + " jobs");
 		System.out.println("Writing output in " + output);
 		File f = new File(output);
-		Utils.delete(f);
-		f.mkdir();
+		if(!f.exists()) {
+			f.mkdirs();
+		}
+		if(f.isDirectory() && (f.list().length != 0)) {
+			System.out.println("jdl file output file " + output + " is not empty, exiting");
+			System.exit(1);		
+		}
 		boolean status = true;
         
         for(String part : this.queryFasta) {
@@ -90,9 +95,9 @@ public class Submitter {
 
 	public Submitter(String databaseFasta, String queryDir, String organisms, String VO) {
 		super();
-		this.organisms = organisms;
+		this.organisms = "../" + organisms;
 		this.databaseFasta = databaseFasta;
-		this.queryDir = Utils.appendSlash(queryDir);
+		this.queryDir = "../" + Utils.appendSlash(queryDir);
 		this.VO = VO;
 		File input = new File(queryDir);
 		File[] listOfFiles = input.listFiles(); // NOT IN ORDER!

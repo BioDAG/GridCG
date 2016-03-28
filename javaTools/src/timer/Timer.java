@@ -115,7 +115,7 @@ public class Timer {
 
 		@Override
 		public String toString() {
-			return "days=" + days + ", hours=" + hours + ", minutes=" + minutes + ", seconds=" + seconds;
+			return days + " days, " + hours + " hours, " + minutes + " minutes and " + seconds + " seconds.";
 		}
 
 
