@@ -1,0 +1,6 @@
+# Comment line
+query_directory NEW_FASTA
+database testDatabase.faa
+gene_map GenomeNew
+virtual_organization see
+isBBH false

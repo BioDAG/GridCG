@@ -38,8 +38,10 @@ timestamp="../timestamp.out"
 
 javaDir="/home/steremma/Thesis/javaTools"
 javac -d $javaDir/bin $javaDir/src/submit/*.java
-JDL_DIR=`java -cp $javaDir/bin submit/Submit $DATABASE $QUERY_DIR $ORGANISMS $VO $isBBH`
-
+MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+JDL_DIR=`java -cp $javaDir/bin submit/Submit $DATABASE $QUERY_DIR $ORGANISMS $VO $isBBH $MY_DIR`
+echo $JDL_DIR
+exit 1
 
 
 # Assuming default jdl directory in Java code.

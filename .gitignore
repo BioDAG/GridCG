@@ -24,6 +24,7 @@ jdl_collection/
 Phylo_output/
 BH_output/
 Blast_output/
+session_*
 
 # Do not commit timestamps
 timestamp.out
