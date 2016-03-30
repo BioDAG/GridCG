@@ -23,9 +23,9 @@ Submit(){
 }
 
 # This script tries to submit multiple blast jobs
-if [ "$#" -ne 5 ]; then
+if [ "$#" -ne 6 ]; then
     echo "Wrong number of arguments"
-    echo "USAGE: submitAll.sh <database.fasta> <query_directory> <organisms.txt> <VO> <isBBH>" 
+    echo "USAGE: submitAll.sh <database.fasta> <query_directory> <organisms.txt> <VO> <isBBH> <timestamp>" 
     exit 1
 fi
 
@@ -34,18 +34,17 @@ QUERY_DIR=$2
 ORGANISMS=$3
 VO=$4
 isBBH=$5
-timestamp="../timestamp.out"
+timestamp=$6
 
 javaDir="/home/steremma/Thesis/javaTools"
 javac -d $javaDir/bin $javaDir/src/submit/*.java
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 JDL_DIR=`java -cp $javaDir/bin submit/Submit $DATABASE $QUERY_DIR $ORGANISMS $VO $isBBH $MY_DIR`
 echo $JDL_DIR
-exit 1
 
 
 # Assuming default jdl directory in Java code.
-JDL_DIR="/home/steremma/Thesis/jdl_collection"
+# JDL_DIR="/home/steremma/Thesis/jdl_collection"
 
 # Available greek storage elements for the biomed VO.
 storage_elements=(
@@ -79,7 +78,7 @@ rm log
 # NOTE: submission will work only when called from inside the JDL_DIR.
 # Thats why navigation (cd's) is needed.
 cd $JDL_DIR
-cp /home/steremma/Thesis/scripts/handleJob.sh ./
+cp ../handleJob.sh ./
 mkdir JOBID
 declare -i jobNumber=$(ls JOBID/ | wc -l)
 currentTime=$(date +"%Y-%m-%d %T")
@@ -91,7 +90,7 @@ for file in `ls`; do
     let "jobNumber++"
     Submit $jobNumber $file	
     nohup ./handleJob.sh $file $jobNumber $numJobs $timestamp &
-    sleep 60 # Set me to 1 hour
+    sleep 3600 # Set me to 1 hour
   fi
 done
 

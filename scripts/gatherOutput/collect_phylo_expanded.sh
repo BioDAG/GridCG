@@ -20,14 +20,14 @@ AppendLeft(){
 	local line="$1"
 	local protein=$(echo $line | awk -F':' '{print $1;}')
 	local vector=$(echo $line | awk -F [\]\[] '{print $2;}')
-	concat_line="$protein:	[ $APPENDER$vector]"
+	concat_line="$protein:	[$LEFT_APPENDER$vector]"
 }
 
 AppendRight(){
 	local line=$1
 	local protein=$(echo $line | awk -F':' '{print $1;}')
 	local vector=$(echo $line | awk -F [\]\[] '{print $2;}')
-	concat_line="$protein:	[$vector$APPENDER ]"
+	concat_line="$protein:	[$vector$RIGHT_APPENDER]"
 }
 
 ConcatLines(){
@@ -41,7 +41,7 @@ ConcatLines(){
 
 Finish(){
 	local mode=$1 # Denotes the unfinished input file
-	local index=$2
+	local index=$2 # Where did i stop?
 	if [ $mode -eq 1 ]; then
 		while read line; do
 			lineIsValid $line
@@ -70,19 +70,39 @@ Finish(){
 	fi
 	
 }
+findOrganism(){
+	while read line; do
+		lineIsValid $line
+		if [ "$valid" = false ]; then
+			continue
+		fi
+		ORGANISM=$(echo $line | awk -F'-' '{print $1"-"$2"-"$3;}')
+		break
+	done < $FILE_1
+}
+
 # MAIN SCRIPT STARTS HERE
 
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Illegal number of parameters"
-    echo "USAGE: concat_expanded_output.sh <file_1> <file_2> <org_identifier>"
+    echo "USAGE: concat_expanded_output.sh <file_1> <file_2> <num_start orgs> <num_expanded_orgs>"
     exit 1
 fi
 
 # Read arguments
 FILE_1=$1
 FILE_2=$2
-ORGANISM=$3
-APPENDER="0 0 0 0 0"
+NUM_ORGS_START=$3
+NUM_ORGS_ADDED=$4
+LEFT_APPENDER=""
+RIGHT_APPENDER=""
+for i in `seq 1 $NUM_ORGS_START`; do
+	LEFT_APPENDER="$LEFT_APPENDER 0"
+done    
+
+for i in `seq 1 $NUM_ORGS_ADDED`; do
+	RIGHT_APPENDER="$RIGHT_APPENDER 0"
+done 
 
 WRITE_FILE="TEST.TXT"
 > $WRITE_FILE

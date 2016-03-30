@@ -18,13 +18,12 @@ public class Submitter {
 	public boolean generateJDLs(String output,boolean isBBH) throws IOException
 	{
 		String phyloExtension = (isBBH) ? ".bh" : ".phylo";
-		String scriptFolder = "../scripts/";
+		String scriptFolder = "../";
 		String phyloExecutable = "blast2phylo.py";
 		String gridExecutable = "gridExecutable.sh";
 
 		output = Utils.appendSlash(output);
-		System.out.println("Generating jdl files for " + ((isBBH) ? "BBH PHYLO" : "REGULAR PHYLO") + " jobs");
-		System.out.println("Writing output in " + output);
+		System.out.println(output);
 		File f = new File(output);
 		if(!f.exists()) {
 			f.mkdirs();

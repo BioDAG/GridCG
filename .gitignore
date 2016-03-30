@@ -28,3 +28,6 @@ session_*
 
 # Do not commit timestamps
 timestamp.out
+
+# Do not commit temp editor files
+*~

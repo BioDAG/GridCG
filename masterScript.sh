@@ -1,6 +1,7 @@
 #!/bin/bash
+set -e
 
-# This script tries to submit multiple blast jobs
+# This is the master script launching every job submission
 if [ "$#" -ne 2 ]; then
     echo "Wrong number of arguments"
     echo "USAGE: masterScript.sh <properties_file> <unique_session_identifier>" 
@@ -36,10 +37,21 @@ timestamp=`awk '/timestamp/{print $2;}' $properties`
 cp scripts/*.sh $sf
 cp scripts/*.py $sf
 cp -r $QUERY_DIR $sf
-cp $DATABASE $sf
+# Make sure there are no conflicts on the S.E when uploading the DB
+cp $DATABASE "$sf/"
+# Check if user specified a gene map file
+if [ ! -f $ORGANISMS ]; then
+	./"$sf"/createMapping.sh "$QUERY_DIR" "$sf"/Genome_"$identifier"
+else
+	mv $ORGANISMS "$sf"/Genome_"$identifier"
+fi
+
 if [ "$expand" = false ]; then
 	rm "$sf/expand.sh"
 fi
-
+# Get basename of database file.
+DATABASE=${DATABASE##*/}
 cd $sf
-./submitAll.sh $DATABASE $QUERY_DIR $ORGANISMS $VO $isBBH
+mv $DATABASE "$DATABASE"_"$identifier"
+rm createMapping.sh
+./submitAll.sh "$DATABASE"_"$identifier" $QUERY_DIR Genome_"$identifier" $VO $isBBH $timestamp

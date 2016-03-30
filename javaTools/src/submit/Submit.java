@@ -1,6 +1,7 @@
 package submit;
 
 import java.io.IOException;
+import java.io.File;
 
 public class Submit {
 
@@ -18,7 +19,7 @@ public class Submit {
         	Boolean isBBH = Boolean.valueOf(args[4]);
 		String jdl_collection = args[5]+"/jdl_collection";
 
-		File file=new File(args[5]);
+		File file = new File(args[5]);
 		System.setProperty("user.dir", file.getAbsolutePath());
 
 		Submitter submitter = new Submitter(fastaDB, fastaDir, organisms,VO);
