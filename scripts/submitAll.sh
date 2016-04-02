@@ -9,7 +9,6 @@ Submit(){
 	submit_error="not empty"
 	while [[ -n $submit_error ]]; do
 		submit_error="" # Is this really necessary?
-		# submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep "Error -")
 		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep -A 1 "Error -")	
 		if [[ -z $submit_error ]]; then
 			echo "job $num submitted for the 1st time!"
@@ -42,10 +41,6 @@ MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 JDL_DIR=`java -cp $javaDir/bin submit/Submit $DATABASE $QUERY_DIR $ORGANISMS $VO $isBBH $MY_DIR`
 echo $JDL_DIR
 
-
-# Assuming default jdl directory in Java code.
-# JDL_DIR="/home/steremma/Thesis/jdl_collection"
-
 # Available greek storage elements for the biomed VO.
 storage_elements=(
 	se01.afroditi.hellasgrid.gr
@@ -75,6 +70,11 @@ fi
 
 rm log
 
+# Sort files from larger to smallest to optimize submission
+cd ${QUERY_DIR##*/}
+SORTED_ARRAY=($(ls -l | awk '{print $5 , "\t" ,  $8}' | sort -n -r | awk '{print $2}'))
+cd ..
+
 # NOTE: submission will work only when called from inside the JDL_DIR.
 # Thats why navigation (cd's) is needed.
 cd $JDL_DIR
@@ -84,8 +84,9 @@ declare -i jobNumber=$(ls JOBID/ | wc -l)
 currentTime=$(date +"%Y-%m-%d %T")
 echo "Beginning the submission at time: $currentTime" >> "$timestamp"
 numJobs=$(ls | grep .jdl | wc -l)
-for file in `ls`; do
-  echo $file
+
+for fasta in "${SORTED_ARRAY[@]}"; do
+  file="$fasta.jdl"
   if [[ $file == *.jdl ]]; then
     let "jobNumber++"
     Submit $jobNumber $file	
