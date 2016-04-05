@@ -136,8 +136,7 @@ while $run; do
         fi
 		if [[ $currentStatus == "Aborted" ]]; then 
 			echo "Job Aborted"
-			run="false"
-			exit 5
+			CancelAndResubmit
 		fi
 	elif [[ $currentStatus == "Cancelled" ||  $currentStatus == "Done(Exit Code !=0)"  || $currentStatus == "Cleared" ]]; then
 		echo "Job $jobNumber failed and will be resubmitted"
