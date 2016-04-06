@@ -17,7 +17,7 @@ jobNumber=${2}
 numJobs=${3}
 timestamp=${4}
 jobType="s"
-
+email="stergiadis777@gmail.com"
 
 ################################################################################
 #                                                                              #
@@ -186,6 +186,7 @@ if [[ $getOutput == "true" ]]; then
 		javac -d /home/steremma/Thesis/javaTools/bin /home/steremma/Thesis/javaTools/src/timer/*.java
 		echo "# Time report starts here" >>  /home/steremma/Thesis/TimeReport.txt
 		java -classpath /home/steremma/Thesis/javaTools/bin timer/Timer $timestamp >> /home/steremma/Thesis/TimeReport.txt
+		mail -s "Your Job Report From HellasGrid" $email < /home/steremma/Thesis/TimeReport.txt
 	fi
 fi
 	
