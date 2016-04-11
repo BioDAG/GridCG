@@ -24,16 +24,30 @@ mkdir "$sf"
 
 # Read the provided properties file
 QUERY_DIR=`awk '/query_directory/{print $2;}' $properties`
+if [[ -z $QUERY_DIR ]]; then
+	echo "Please specify a query directory in the properties file"
+	exit 1
+fi
 ORGANISMS=`awk '/gene_map/{print $2;}' $properties`
+if [[ -z $ORGANISMS ]];	then
+        echo "Please specify a gene map file in the properties file"
+        exit 1
+fi
 DATABASE=`awk '/database/{print $2;}' $properties`
+if [[ -z $DATABASE ]];	then
+        echo "Please specify the database in the properties file"
+        exit 1
+fi
 VO=`awk '/virtual_organization/{print $2;}' $properties`
 [[ -z  $VO  ]] && VO="see"
 isBBH=`awk '/isBBH/{print $2;}' $properties`
+[[ -z $isBBH ]] && isBBH="false"
 expand=`awk '/expand/{print $2;}' $properties`
 [[ -z  $expand  ]] && expand="false"
 timestamp=`awk '/timestamp/{print $2;}' $properties`
-[[ -z  $timestamp  ]] && timestamp="timestamp.out"
+[[ -z  $timestamp  ]] && timestamp=timestamp_"$identifier.out"
 
+cp $properties $sf
 cp scripts/*.sh $sf
 cp scripts/*.py $sf
 cp -r $QUERY_DIR $sf
@@ -43,7 +57,7 @@ cp $DATABASE "$sf/"
 if [ ! -f $ORGANISMS ]; then
 	./"$sf"/createMapping.sh "$QUERY_DIR" "$sf"/Genome_"$identifier"
 else
-	mv $ORGANISMS "$sf"/Genome_"$identifier"
+	cp $ORGANISMS "$sf"/Genome_"$identifier"
 fi
 
 if [ "$expand" = false ]; then
@@ -54,4 +68,4 @@ DATABASE=${DATABASE##*/}
 cd $sf
 mv $DATABASE "$DATABASE"_"$identifier"
 rm createMapping.sh
-./submitAll.sh "$DATABASE"_"$identifier" $QUERY_DIR Genome_"$identifier" $VO $isBBH $timestamp
+nohup ./submitAll.sh "$DATABASE"_"$identifier" $QUERY_DIR Genome_"$identifier" $VO $isBBH $timestamp &

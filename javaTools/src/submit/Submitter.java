@@ -28,10 +28,6 @@ public class Submitter {
 		if(!f.exists()) {
 			f.mkdirs();
 		}
-		if(f.isDirectory() && (f.list().length != 0)) {
-			System.out.println("jdl file output file " + output + " is not empty, exiting");
-			System.exit(1);		
-		}
 		boolean status = true;
         
         for(String part : this.queryFasta) {

@@ -71,7 +71,7 @@ fi
 rm log
 
 # Sort files from larger to smallest to optimize submission
-cd ${QUERY_DIR##*/}
+cd "$QUERY_DIR"
 SORTED_ARRAY=($(ls -l | awk '{print $5 , "\t" ,  $8}' | sort -n -r | awk '{print $2}'))
 cd ..
 
@@ -79,7 +79,9 @@ cd ..
 # Thats why navigation (cd's) is needed.
 cd $JDL_DIR
 cp ../handleJob.sh ./
-mkdir JOBID
+
+mkdir -p JOBID
+
 declare -i jobNumber=$(ls JOBID/ | wc -l)
 currentTime=$(date +"%Y-%m-%d %T")
 echo "Beginning the submission at time: $currentTime" >> "$timestamp"

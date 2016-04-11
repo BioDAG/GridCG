@@ -1,5 +1,4 @@
-﻿#!/bin/bash
-set -e
+#!/bin/bash
 
 # There are 2 distinct parts in this process. First, expand the already existing profiles
 # (both .blast and .bh) of the old organisms with matches to the new organisms. This only
@@ -25,6 +24,16 @@ isBBH=$5
 # The Virtual Organization should maybe be read as an additional argument.
 VO="see"
 
+# Check invariables (previous output must be available)
+if [[ (! -d "BH_output" && $isBBH = true) || (! -d "Phylo_output" && $isBBH = false) ]]; then
+	echo "previous phylogenetic profiles do not exist, cannot expand"
+	exit 1
+fi
+if [ ! -d "Blast_output" ]; then
+	echo "directory Blast_output does not exist, cannot expand!"
+	exit 1
+fi
+
 # Combine old and new organism identifier files (GenomeOLD - GenomeNEW)
 FULL_ORGS="GenomeBoth"
 cat $OLD_ORGS $NEW_ORGS > $FULL_ORGS
@@ -38,10 +47,10 @@ cat $OLD_FASTA_DIR/*.faa > $OLD_DB
 cat $OLD_DB $NEW_DB > $FULL_DB
 
 # Blast and profile the old organisms vs the new database.
-submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO $isBBH
+./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO $isBBH "expandedTimestamp.out"
 
 # Blast and profile the new organisms vs the full database.
-submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO $isBBH
+./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO $isBBH "expandedTimestamp.out"
 
 # Clean up
 rm $NEW_DB
