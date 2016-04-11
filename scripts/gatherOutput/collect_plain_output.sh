@@ -6,7 +6,7 @@ set -e
 # 1 blast (.blast extension) and 1 phylogenetic (.bh extension) output file.
 
 if [ "$#" -ne 1 ]; then
-    echo "USAGE: collect_output.sh <output_base_direcory>"
+    echo "USAGE: collect_output.sh <jdl_directory>"
     E_ARGS=85
     exit $E_ARGS
 fi

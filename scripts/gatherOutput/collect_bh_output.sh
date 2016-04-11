@@ -16,12 +16,10 @@ ORGANISMS=$1
 mkdir -p Blast_output
 mkdir -p BH_output
 
-#mv `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
-cp `find jdl_collection/JOBID/steremma_* -name "*.blast"` Blast_output/
-#mv `find jdl_collection/JOBID/steremma_* -name "*.bh"` BH_output/
-cp `find jdl_collection/JOBID/steremma_* -name "*.bh"` BH_output/
+mv `find jdl_collection/steremma_* -name "*.blast"` Blast_output/
+mv `find jdl_collection/steremma_* -name "*.bh"` BH_output/
 
-#rm -r jdl_collection/JOBID/steremma_*
+rm -r jdl_collection/steremma_*
 
 if [ ! -d "BH_output" ]; then
 	echo "directory BH_output does not exist!"
