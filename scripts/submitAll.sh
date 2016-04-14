@@ -55,7 +55,7 @@ storage_elements=(
 
 lcg-del -a lfn:/grid/see/steremma/${DATABASE##*/} 2>/dev/null || true # Ignore error on this particular command
 for j in ${storage_elements[@]}; do
-  	lcg-cr -v -d $j -l lfn:/grid/see/steremma/${DATABASE##*/} file:$DATABASE > log  2>&1
+  	lcg-cr -v -d $j -l lfn:/grid/see/steremma/${DATABASE##*/} file:$DATABASE >> log  2>&1
   	if [ $? == 0 ]; then
      	break;
   	fi

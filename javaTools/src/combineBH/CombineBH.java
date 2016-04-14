@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import javaTools.submit.Utils;
 
 public class CombineBH {
 
@@ -26,17 +25,6 @@ public class CombineBH {
     			"USAGE: java javaTools/combineBH/CombineBH <BH directory> <organisms.txt>";
     }
     
-	private static void test() 
-	{
-		String BH_directory = "/home/manos/BH_output/";
-		String file2 = Utils.appendSlash(BH_directory) + "BAPH-SCH_MGEN-G37.bh";
-		String file1 = Utils.appendSlash(BH_directory) + "MGEN-G37_BAPH-SCH.bh";
-		BBH test = new BBH(file1,file2);
-
-		test.writeBBH();
-		
-
-	}
 	private static void combineAll(String BH_directory,String orgFile)
 	{
 		ArrayList<String> organisms = new ArrayList<>();
@@ -44,7 +32,6 @@ public class CombineBH {
 			organisms = Utils.readOrgs(orgFile);
 		} catch (FileNotFoundException e) {
 			System.out.println(orgFile + " file could not be found!");
-			e.printStackTrace();
 		}	
 		String bh_1,bh_2;
 		for(int i=0;i<organisms.size();i++) {

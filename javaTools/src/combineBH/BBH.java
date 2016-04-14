@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import javaTools.submit.Utils;
 
 public class BBH {
 	private String file1;
@@ -97,8 +96,12 @@ public class BBH {
 			if(referenceList.get(i) < 0) {
 				continue;
 			}
-			if(checkList.get(referenceList.get(i)) != i) {
-				referenceList.set(i, -1);
+			try {
+				if(checkList.get(referenceList.get(i)) != i) {
+					referenceList.set(i, -1);
+				}
+			} catch(IndexOutOfBoundsException e) {
+				continue;
 			}
 		}
 		done = true;
