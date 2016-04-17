@@ -47,10 +47,8 @@ cat $OLD_FASTA_DIR/*.faa > $OLD_DB
 cat $OLD_DB $NEW_DB > $FULL_DB
 
 # Blast and profile the old organisms vs the new database.
-nohup ./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO $isBBH "expandedTimestamp.out" &
-
-# Blast and profile the new organisms vs the full database.
-nohup ./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO $isBBH "expandedTimestamp.out" &
+nohup sh -c "./submitAll.sh $NEW_DB $OLD_FASTA_DIR $NEW_ORGS $VO $isBBH expandedTimestamp.out;
+             ./submitAll.sh $FULL_DB $NEW_FASTA_DIR $FULL_ORGS $VO $isBBH expandedTimestamp.out" &
 
 # Clean up
 rm $NEW_DB
