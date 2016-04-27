@@ -19,10 +19,6 @@ if [ ! -d "Blast_output" ]; then
 fi
 
 mkdir temp_dir
-# temporarily keep the grid output for debugging purposes.
-#mv `find jdl_collection/steremma_* -name "*.blast"` temp_dir/
-#mv `find jdl_collection/steremma_* -name "*.bh"` temp_dir/
-#rm -r jdl_collection/steremma_*
 cp `find jdl_collection/steremma_* -name "*.blast"` temp_dir/
 cp `find jdl_collection/steremma_* -name "*.bh"` temp_dir/
 
@@ -58,7 +54,6 @@ done
 
 # Clean up
 rm -r temp_dir
-#rm -r jdl_collection/steremma_*
 
 
 

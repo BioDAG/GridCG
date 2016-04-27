@@ -16,7 +16,5 @@ jdl_collection=$1
 mkdir -p Blast_output
 mkdir -p Phylo_output
 
-#mv `find $jdl_collection/steremma_* -name "*.blast"` Blast_output/
 cp `find $jdl_collection/steremma_* -name "*.blast"` Blast_output/
-#mv `find $jdl_collection/steremma_* -name "*.phylo"` Phylo_output/
 cp `find $jdl_collection/steremma_* -name "*.phylo"` Phylo_output/
