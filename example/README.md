@@ -16,6 +16,6 @@ will also return the intermediate results, namely the Blast output.
 
 
 Results can be post processed to facilitate visualization using any of the
-libraries provided in the javaTools/src/postProcessing package. For example 
+libraries provided in the postProcessing Java package. For example 
 the user can try to run the `PhyloCollapse` or the `phyloFilter` processes to 
 reduce the output.  
