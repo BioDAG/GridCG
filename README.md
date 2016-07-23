@@ -15,3 +15,5 @@ The functionality provided by the tool is currently addressing:
 The similarity between a given pair of sequences is infered either by a high similarity score 
 created by the [BLAST](http://blast.ncbi.nlm.nih.gov/Blast.cgi) tool, and/or by similar phylogenetic profiles constructed using a novel algorithm designed and implemented by the author.
 
+The example folder provides a working scenario for the user to experiment with.
+Details about this analysis can be found in the folder's specific README

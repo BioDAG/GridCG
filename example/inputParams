@@ -1,0 +1,17 @@
+# Required property
+query_directory Query
+
+# Required property
+database database.faa
+
+# Required property
+gene_map GeneMap
+
+# Default VO is "see"
+virtual_organization biomed
+
+# Default is "false" -> plain phylogenetic profiles
+isBBH false
+
+# Default is "false" -> new independent session
+expand false

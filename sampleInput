@@ -1,0 +1,19 @@
+# Edit the parts enclosed in <...> to customize your workflow
+
+# Required property
+query_directory <path to Query directory>
+
+# Required property
+database <path to database fasta file>
+
+# Required property
+gene_map <path to the genome mapping file>
+
+# Default VO is "see"
+virtual_organization <virtual organization the user belongs to>
+
+# Default is "false" -> plain phylogenetic profiles
+isBBH <set to 'true' is you want BBH profiles>
+
+# Default is "false" -> new independent session
+expand <set to 'true' if part of the output is already available>
