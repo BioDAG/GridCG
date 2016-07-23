@@ -1,17 +1,17 @@
-Interactive data analysis framework for sequence analysis on large compute systems
-
-Development of a large-scale data analysis tool, aiming towards similarity detection between
-protein sequences, employing the computational resources offered by EGI.
+<h1> Grid CG </h1>
+<i>A scalable and modular <b>Grid</b> computing framework for <b>C</b>omparative <b>G</b>enomics  </i>
 
 
-Eventually, the functionality provided by the tool is expected to address:
+This projects contains a large-scale data analysis tool, aiming towards similarity detection between
+protein sequences, employing the computational resources offered by [EGI](https://www.egi.eu/).
 
- -Optimization of data management (optimal distribution of data load across nodes).
- -Automatic submission of multiple jobs to the Grid worker nodes.
- -Automatic detection of job failures and resubmission to another node.
- -Visualization of end results (optional)
+The functionality provided by the tool is currently addressing:
+
+1. Optimization of data management (optimal distribution of data load across nodes).
+2. Automatic submission of multiple jobs to the Grid worker nodes.
+3. Automatic detection of job failures and resubmission to another node.
+4. Visualization of the end results through extensible post processing libraries.
  
-Each subdirectory contains source and documentation for a specific usage scenario.
-For example Phylogenetic creates plain phylogenetic profiles while createBBH uses the
-best bidirectional hit approach. Details about each scenario can be found in the 
-respective README of each sub-directory.
+The similarity between a given pair of sequences is infered either by a high similarity score 
+created by the [BLAST](http://blast.ncbi.nlm.nih.gov/Blast.cgi) tool, and/or by similar phylogenetic profiles constructed using a novel algorithm designed and implemented by the author.
+
