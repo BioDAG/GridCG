@@ -1,6 +1,6 @@
 <h1> A working example </h1>
 
-This folder contains a full working example of reasonable size (10 medium size genomes) for the user
+This folder contains a full working example of reasonable size (10 medium sized genomes) for the user
 to experiment with.
 
 Run it using `./masterscript InputParams test`
