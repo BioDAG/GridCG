@@ -37,8 +37,6 @@ done
 cd ..
 
 # Combine BH files to create BBH files. Default output directory is BBH/ .
-javac javaTools/combineBH/*.java
-java javaTools/combineBH/CombineBH BH_output $ORGANISMS
-
-
-
+javaDir="/home/steremma/Thesis/javaTools"
+javac -d $javaDir/bin $javaDir/src/combineBH/*.java
+java -cp $javaDir/bin combineBH/CombineBH "BH_output/" "$ORGANISMS"

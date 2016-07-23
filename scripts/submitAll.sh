@@ -9,11 +9,12 @@ Submit(){
 	submit_error="not empty"
 	while [[ -n $submit_error ]]; do
 		submit_error="" # Is this really necessary?
-		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" --endpoint $endpoint -a $jdl 2>&1 | grep -A 1 "Error -")	
+		submit_error=$(glite-wms-job-submit -o "JOBID/jobID_$num" -a $jdl 2>&1 | grep -A 1 "Error -")	
 		if [[ -z $submit_error ]]; then
 			echo "job $num submitted for the 1st time!"
 			currentTime=$(date +"%Y-%m-%d %T")
 			echo "submitted job $num at: $currentTime" >> "$timestamp"
+			echo "$num	$jdl" >> idToOrganismMap.txt
 		else
 			echo $submit_error
 		fi

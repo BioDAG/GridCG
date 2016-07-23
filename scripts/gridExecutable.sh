@@ -53,7 +53,7 @@ isBBH=$4
 output="${QUERY%.*}.blast"
 
 # Comment out the following line if running on local machine (blast already installed).
-blast_version="2.3.0"
+blast_version="2.4.0"
 #blast_version="2.2.31"
 getBlast $blast_version
 

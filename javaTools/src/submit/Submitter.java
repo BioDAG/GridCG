@@ -47,8 +47,7 @@ public class Submitter {
     			writer.println("OutputSandbox = {\"std.out\",\"std.err\",\""+Utils.stripExtension(part)+".blast"
 								+"\",\""+Utils.stripExtension(part)+phyloExtension+"\"};");
     			writer.println("VirtualOrganisation = \""+VO+"\";");
-    			writer.println("Requirements = (other.GlueCEInfoHostName == \"cream01.grid.auth.gr\") ||"
-    					+ " (other.GlueCEInfoHostName == \"cream.afroditi.hellasgrid.gr\");");
+    			writer.println("Requirements = (other.GlueCEInfoHostName == \"cream01.grid.auth.gr\")");
 
     		} catch (FileNotFoundException e) {
     			System.out.println("generateJDL failed, output path could not be found");
